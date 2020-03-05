@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  creationTimestamp: "2020-03-03T15:44:58Z"
+  name: spark
+  namespace: dev
+  resourceVersion: "1933673"
+  selfLink: /api/v1/namespaces/dev/serviceaccounts/spark
+  uid: cdad5899-a881-4d5c-8721-a9a7b25ee41d
+secrets:
+- name: spark-token-2p5n9
+
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations:
+    rbac.authorization.kubernetes.io/autoupdate: "true"
+  labels:
+    kubernetes.io/bootstrapping: rbac-defaults
+  name: spark-dev
+rules:
+  - verbs:
+        - get
+        - list
+        - watch
+      apiGroups:
+        - ''
+      resources:
+        - nodes
+        - services
+        - endpoints
+        - pods
+        - nodes/proxy
+    - verbs:
+        - get
+      apiGroups:
+        - ''
+      resources:
+        - configmaps
+    - verbs:
+        - get
+      nonResourceURLs:
+        - /metrics
+
+
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: discover-role-bind
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: discover_role
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: system:anonymous

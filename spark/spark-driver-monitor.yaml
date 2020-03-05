@@ -1,0 +1,23 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: spark-pi-customer-driver-svc
+  namespace: dev
+spec:
+  ports:
+    - name: driver-rpc-port
+      protocol: TCP
+      port: 7078
+      targetPort: 7078
+    - name: blockmanager
+      protocol: TCP
+      port: 7079
+      targetPort: 7079
+    - name: ui
+      protocol: TCP
+      port: 4040
+      targetPort: 4040
+  selector:
+    spark-app-selector: spark-8cbca72236294692b0c6aba891afab7c
+    spark-role: driver
+  type: NodePort
